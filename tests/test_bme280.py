@@ -24,16 +24,12 @@ def mock_bme280():
 
 @pytest.fixture
 def gpio_config():
-    return GPIOConfig(
-            sda_pin=2,
-            scl_pin=3,
-            i2c_address=0x77
-        )
+    return GPIOConfig(sda_pin=2, scl_pin=3, i2c_address=0x77)
 
 
 @pytest.fixture
-@unittest.mock.patch('bme280.I2C')
-@unittest.mock.patch('bme280.Adafruit_BME280_I2C')
+@unittest.mock.patch("bme280.I2C")
+@unittest.mock.patch("bme280.Adafruit_BME280_I2C")
 def sensor(bme280_mock, i2c_mock, mock_bme280, mock_i2c, gpio_config):
     bme280_mock.return_value = mock_bme280
     i2c_mock.return_value = mock_i2c
@@ -65,7 +61,7 @@ def test_get_relative_humidity(sensor):
 
 
 def test_get_measurement(sensor):
-    weather_station_uuid = 'station-1'
+    weather_station_uuid = "station-1"
     measurement = sensor.get_measurement(weather_station_uuid)
 
     assert measurement.weather_station_uuid == weather_station_uuid

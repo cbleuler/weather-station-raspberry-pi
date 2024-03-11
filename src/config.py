@@ -1,5 +1,5 @@
-from confme import BaseConfig
-from confme.annotation import Secret
+from confme import BaseConfig  # pylint: disable=import-error
+from confme.annotation import Secret  # pylint: disable=import-error
 
 
 class APIConfig(BaseConfig):

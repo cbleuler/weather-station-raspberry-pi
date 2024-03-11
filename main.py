@@ -18,9 +18,9 @@ async def process_new_reading(sensor: Bme280Sensor, api_client: ApiClient, weath
 
 
 async def main(config: WeatherStationConfig):
-    sensor = Bme280Sensor(config.gpio_config,
-                          altitude=config.altitude,
-                          std_sea_level_pressure=config.normal_sea_level_pressure)
+    sensor = Bme280Sensor(
+        config.gpio_config, altitude=config.altitude, std_sea_level_pressure=config.normal_sea_level_pressure
+    )
 
     logging.debug("Sensor is initialized.")
 
@@ -30,16 +30,13 @@ async def main(config: WeatherStationConfig):
 
     while True:
         try:
-            await asyncio.gather(
-                process_new_reading(sensor, api_client, config.uuid),
-                asyncio.sleep(1)
-            )
+            await asyncio.gather(process_new_reading(sensor, api_client, config.uuid), asyncio.sleep(1))
             logging.debug("Measurement sent.")
         except ConnectionError as e:
             logging.warning("Connection error occurred: %s", e)
             time.sleep(5)
 
 
-if __name__ == '__main__':
-    weather_station_config = WeatherStationConfig.load('config/conf.yaml')
+if __name__ == "__main__":
+    weather_station_config = WeatherStationConfig.load("config/conf.yaml")
     asyncio.run(main(weather_station_config))

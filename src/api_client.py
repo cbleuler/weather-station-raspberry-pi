@@ -2,7 +2,7 @@ import asyncio
 import json
 import logging
 from dataclasses import dataclass
-from pydantic import SecretStr
+from pydantic import SecretStr  # pylint: disable=import-error
 
 import requests
 

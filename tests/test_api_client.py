@@ -12,24 +12,15 @@ from config import WeatherStationConfig, APIConfig, GPIOConfig
 
 @pytest.fixture
 def api_config():
-    api_config = APIConfig(
-        host="http://127.0.0.1",
-        port=8000,
-        user="someuser",
-        password="secret"
-    )
-    gpio_config = GPIOConfig(
-        sda_pin=2,
-        scl_pin=3,
-        i2c_address=0x77
-    )
+    api_config = APIConfig(host="http://127.0.0.1", port=8000, user="someuser", password="secret")
+    gpio_config = GPIOConfig(sda_pin=2, scl_pin=3, i2c_address=0x77)
     config = WeatherStationConfig(
         name="Weather Station",
         uuid="station-1",
         altitude=452.1,
         normal_sea_level_pressure=1013.25,
         api=api_config,
-        gpio_config=gpio_config
+        gpio_config=gpio_config,
     )
     return config
 
@@ -52,22 +43,22 @@ def sensor_reading():
         pressure=1013.12,
         humidity=0.42,
         timestamp=datetime.datetime(2023, 1, 1),
-        weather_station_uuid='station-1'
+        weather_station_uuid="station-1",
     )
     return reading
 
 
 def test_init(api_client):
-    assert api_client.base_url == 'http://127.0.0.1:8000'
-    assert api_client.authentication_path == '/api/token'
-    assert api_client.request_path == '/api/v1/measurement'
-    assert api_client.username == 'someuser'
-    assert api_client.password.get_secret_value() == 'secret'
+    assert api_client.base_url == "http://127.0.0.1:8000"
+    assert api_client.authentication_path == "/api/token"
+    assert api_client.request_path == "/api/v1/measurement"
+    assert api_client.username == "someuser"
+    assert api_client.password.get_secret_value() == "secret"
 
     assert api_client._auth_header == {}
 
-    assert api_client.authentication_url == 'http://127.0.0.1:8000/api/token'
-    assert api_client.request_url == 'http://127.0.0.1:8000/api/v1/measurement'
+    assert api_client.authentication_url == "http://127.0.0.1:8000/api/token"
+    assert api_client.request_url == "http://127.0.0.1:8000/api/v1/measurement"
 
 
 def test_init_from_config(api_config, api_client):
@@ -75,21 +66,28 @@ def test_init_from_config(api_config, api_client):
     assert api_client_from_config == api_client
 
 
-@pytest.mark.parametrize("auth_response,token", [
-('{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'
- '.eyJzdWIiOiJyb290Iiwic2NvcGVzIjpbIm1lYXN1cmVtZW50OndyaXRlIl0sImV4cCI6MTcwOTMzNjQ3N30'
- '.nZt6YP2WInjurtqDPKYFEJ4AEju59cZWEQypfsCfDSM","token_type":"bearer"}',
- "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
- ".eyJzdWIiOiJyb290Iiwic2NvcGVzIjpbIm1lYXN1cmVtZW50OndyaXRlIl0sImV4cCI6MTcwOTMzNjQ3N30"
- ".nZt6YP2WInjurtqDPKYFEJ4AEju59cZWEQypfsCfDSM"),
-('{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'
- '.eyJzdWIiOiJyb290Iiwic2NvcGVzIjpbIm1lYXN1cmVtZW50OndyaXRlIl0sImV4cCI6MTcwOTMzNjQ3N30'
- '.nZt6YP2WInjurtqDPKYFEJ4AEju59cZWEQypfsCfDSM","token_type":"bearer"}',
- "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
- ".eyJzdWIiOiJyb290Iiwic2NvcGVzIjpbIm1lYXN1cmVtZW50OndyaXRlIl0sImV4cCI6MTcwOTMzNjQ3N30"
- ".nZt6YP2WInjurtqDPKYFEJ4AEju59cZWEQypfsCfDSM"),
-])
-@unittest.mock.patch('requests.post')
+@pytest.mark.parametrize(
+    "auth_response,token",
+    [
+        (
+            '{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'
+            ".eyJzdWIiOiJyb290Iiwic2NvcGVzIjpbIm1lYXN1cmVtZW50OndyaXRlIl0sImV4cCI6MTcwOTMzNjQ3N30"
+            '.nZt6YP2WInjurtqDPKYFEJ4AEju59cZWEQypfsCfDSM","token_type":"bearer"}',
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+            ".eyJzdWIiOiJyb290Iiwic2NvcGVzIjpbIm1lYXN1cmVtZW50OndyaXRlIl0sImV4cCI6MTcwOTMzNjQ3N30"
+            ".nZt6YP2WInjurtqDPKYFEJ4AEju59cZWEQypfsCfDSM",
+        ),
+        (
+            '{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'
+            ".eyJzdWIiOiJyb290Iiwic2NvcGVzIjpbIm1lYXN1cmVtZW50OndyaXRlIl0sImV4cCI6MTcwOTMzNjQ3N30"
+            '.nZt6YP2WInjurtqDPKYFEJ4AEju59cZWEQypfsCfDSM","token_type":"bearer"}',
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+            ".eyJzdWIiOiJyb290Iiwic2NvcGVzIjpbIm1lYXN1cmVtZW50OndyaXRlIl0sImV4cCI6MTcwOTMzNjQ3N30"
+            ".nZt6YP2WInjurtqDPKYFEJ4AEju59cZWEQypfsCfDSM",
+        ),
+    ],
+)
+@unittest.mock.patch("requests.post")
 def test_create_auth_header(mock_auth_response, auth_response, token, api_client):
     mock_res = lambda: None
     mock_res.text = auth_response
@@ -108,12 +106,15 @@ def test_get_auth_header(api_client, auth_header):
     assert api_client.get_auth_header(refresh=True) == auth_header
 
 
-@pytest.mark.parametrize("status_code,return_value", [
-    (200, True),    # Valid token successful request
-    (404, False),   # Unsuccessful request
-    (401, False),   # Invalid token
-])
-@unittest.mock.patch('requests.post')
+@pytest.mark.parametrize(
+    "status_code,return_value",
+    [
+        (200, True),  # Valid token successful request
+        (404, False),  # Unsuccessful request
+        (401, False),  # Invalid token
+    ],
+)
+@unittest.mock.patch("requests.post")
 def test_send_sync_reading(mock_auth_response, status_code, return_value, api_client, auth_header, sensor_reading):
     mock_res = lambda: None
     mock_res.status_code = status_code
@@ -123,4 +124,3 @@ def test_send_sync_reading(mock_auth_response, status_code, return_value, api_cl
     api_client.get_auth_header = MagicMock(return_value=auth_header)
 
     assert api_client.send_sync_reading(sensor_reading) == return_value
-

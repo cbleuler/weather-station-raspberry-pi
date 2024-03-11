@@ -1,8 +1,8 @@
 from datetime import datetime
 import math
 
-from busio import I2C
-from adafruit_bme280.basic import Adafruit_BME280_I2C
+from busio import I2C  # pylint: disable=import-error
+from adafruit_bme280.basic import Adafruit_BME280_I2C  # pylint: disable=import-error
 from config import GPIOConfig
 from sensor_reading import SensorReading
 
