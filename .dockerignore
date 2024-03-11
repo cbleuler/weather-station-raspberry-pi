@@ -1,0 +1,8 @@
+venv
+.venv
+.github
+.pytest_cache
+config
+environments
+installation
+logs

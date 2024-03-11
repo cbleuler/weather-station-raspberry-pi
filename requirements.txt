@@ -1,0 +1,10 @@
+requests>=2.25.1
+pydantic==2.4.2
+confme==2.0.2
+adafruit-circuitpython-bme280==2.6.6
+adafruit_blinka
+RPi.GPIO>=0.7.0
+
+# Test Requirements
+pytest==7.3.1
+pytest-dotenv==0.5.2

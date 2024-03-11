@@ -1,0 +1,12 @@
+name: "Weather Station"
+uuid: "station-1"
+altitude: 452.1
+normal_sea_level_pressure: 1013.25
+api:
+    host: "http://localhost"
+    port: 8000
+    user: "admin"
+gpio_config:
+    sda_pin: 3
+    scl_pin: 2
+    i2c_address: 0x76

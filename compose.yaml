@@ -1,0 +1,15 @@
+services:
+  weather_station_client:
+    image: weather_station:latest
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /opt/weather_station/config:/app/config
+    env_file:
+      - /opt/weather_station/environment.env
+    devices:
+      - /dev/gpiomem:/dev/gpiomem
+    privileged: true
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
