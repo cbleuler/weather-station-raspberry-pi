@@ -9,10 +9,11 @@ class APIConfig(BaseConfig):
     password: str = Secret("API_PASSWORD")
 
 
-class GPIOConfig(BaseConfig):
+class SensorConfig(BaseConfig):
     sda_pin: int = 2
     scl_pin: int = 3
     i2c_address: int = 0x77
+    type: str = "bme280"
 
 
 class WeatherStationConfig(BaseConfig):
@@ -21,4 +22,4 @@ class WeatherStationConfig(BaseConfig):
     altitude: float
     normal_sea_level_pressure: float = 1013.25
     api: APIConfig
-    gpio_config: GPIOConfig
+    sensor_config: SensorConfig

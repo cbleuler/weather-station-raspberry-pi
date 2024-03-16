@@ -3,24 +3,24 @@ import unittest.mock
 from unittest.mock import MagicMock
 
 import pytest
-from pydantic import SecretStr
 
 from api_client import ApiClient
 from sensor_reading import SensorReading
-from config import WeatherStationConfig, APIConfig, GPIOConfig
+from config import WeatherStationConfig, APIConfig, SensorConfig
+from errors import AuthenticationError
 
 
 @pytest.fixture
 def api_config():
     api_config = APIConfig(host="http://127.0.0.1", port=8000, user="someuser", password="secret")
-    gpio_config = GPIOConfig(sda_pin=2, scl_pin=3, i2c_address=0x77)
+    sensor_config = SensorConfig(sda_pin=2, scl_pin=3, i2c_address=0x77, type="bme680")
     config = WeatherStationConfig(
         name="Weather Station",
         uuid="station-1",
         altitude=452.1,
         normal_sea_level_pressure=1013.25,
         api=api_config,
-        gpio_config=gpio_config,
+        sensor_config=sensor_config,
     )
     return config
 
@@ -33,7 +33,7 @@ def api_client(api_config):
 
 @pytest.fixture
 def auth_header():
-    return {"Authorization": f"Bearer abc"}
+    return {"Authorization": "Bearer abc"}
 
 
 @pytest.fixture
@@ -88,14 +88,51 @@ def test_init_from_config(api_config, api_client):
     ],
 )
 @unittest.mock.patch("requests.post")
-def test_create_auth_header(mock_auth_response, auth_response, token, api_client):
+def test_create_auth_header_valid_password(mock_auth_response, auth_response, token, api_client):
     mock_res = lambda: None
     mock_res.text = auth_response
+    mock_res.status_code = 200
     mock_auth_response.return_value = mock_res
 
     actual_auth_header = api_client._create_auth_header()
 
     assert actual_auth_header == {"Authorization": f"Bearer {token}"}
+
+
+@unittest.mock.patch("requests.post")
+def test_create_auth_header_empty_password(mock_auth_response, api_client):
+    mock_res = lambda: None
+    mock_res.status_code = 422
+    mock_auth_response.return_value = mock_res
+
+    with pytest.raises(AuthenticationError) as e:
+        api_client._create_auth_header()
+
+    assert str(e.value) == "Non-empty password must be provided."
+
+
+@unittest.mock.patch("requests.post")
+def test_create_auth_header_wrong_password(mock_auth_response, api_client):
+    mock_res = lambda: None
+    mock_res.status_code = 401
+    mock_auth_response.return_value = mock_res
+
+    with pytest.raises(AuthenticationError) as e:
+        api_client._create_auth_header()
+
+    assert str(e.value) == "Username or password is incorrect."
+
+
+@unittest.mock.patch("requests.post")
+def test_create_auth_header_other_error(mock_auth_response, api_client):
+    mock_res = lambda: None
+    mock_res.status_code = 404
+    mock_auth_response.return_value = mock_res
+
+    with pytest.raises(AuthenticationError) as e:
+        api_client._create_auth_header()
+
+    assert str(e.value) == "Something went wrong during authentication."
 
 
 def test_get_auth_header(api_client, auth_header):

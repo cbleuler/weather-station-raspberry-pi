@@ -8,6 +8,7 @@ import requests
 
 from config import WeatherStationConfig
 from sensor_reading import SensorReading
+from errors import AuthenticationError
 
 
 class TokenExpiredError(Exception):
@@ -51,6 +52,14 @@ class ApiClient:
             },
             timeout=10,
         )
+
+        if res.status_code == 422:
+            raise AuthenticationError("Non-empty password must be provided.")
+        if res.status_code == 401:
+            raise AuthenticationError("Username or password is incorrect.")
+        if res.status_code != 200:
+            raise AuthenticationError("Something went wrong during authentication.")
+
         data = json.loads(res.text)
         try:
             token = data["token"]

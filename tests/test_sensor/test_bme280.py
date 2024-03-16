@@ -2,8 +2,8 @@ import unittest.mock
 from unittest.mock import MagicMock
 import pytest
 
-from config import GPIOConfig
-from bme280 import Bme280Sensor
+from config import SensorConfig
+from sensor.bme.bme280 import Bme280Sensor
 
 
 @pytest.fixture
@@ -24,19 +24,19 @@ def mock_bme280():
 
 @pytest.fixture
 def gpio_config():
-    return GPIOConfig(sda_pin=2, scl_pin=3, i2c_address=0x77)
+    return SensorConfig(sda_pin=2, scl_pin=3, i2c_address=0x77)
 
 
 @pytest.fixture
-@unittest.mock.patch("bme280.I2C")
-@unittest.mock.patch("bme280.Adafruit_BME280_I2C")
+@unittest.mock.patch("sensor.bme.bme280.I2C")
+@unittest.mock.patch("sensor.bme.bme280.Adafruit_BME280_I2C")
 def sensor(bme280_mock, i2c_mock, mock_bme280, mock_i2c, gpio_config):
     bme280_mock.return_value = mock_bme280
     i2c_mock.return_value = mock_i2c
 
     sea_level_pressure = 1013.25
     altitude = 1000
-    bme280_sensor = Bme280Sensor(gpio_config=gpio_config, altitude=altitude, std_sea_level_pressure=sea_level_pressure)
+    bme280_sensor = Bme280Sensor(sensor_config=gpio_config, altitude=altitude, std_sea_level_pressure=sea_level_pressure)
     return bme280_sensor
 
 
@@ -44,7 +44,7 @@ def test_init(sensor):
     sea_level_pressure = 1013.25
     altitude = 1000
 
-    assert sensor.bme280.sea_level_pressure == sea_level_pressure
+    assert sensor.sensor.sea_level_pressure == sea_level_pressure
     assert sensor.altitude == altitude
 
 
