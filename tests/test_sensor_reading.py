@@ -7,8 +7,8 @@ from sensor_reading import SensorReading
 @pytest.fixture
 def sensor_reading_without_air_quality():
     reading = SensorReading(
-        temperature=20,
-        pressure=1013.12,
+        air_temperature=20,
+        air_pressure=1013.12,
         humidity=0.42,
         timestamp=datetime.datetime(2023, 1, 1),
         weather_station_uuid="station-1",
@@ -19,8 +19,8 @@ def sensor_reading_without_air_quality():
 @pytest.fixture
 def sensor_reading_with_air_quality():
     reading = SensorReading(
-        temperature=20,
-        pressure=1013.12,
+        air_temperature=20,
+        air_pressure=1013.12,
         humidity=0.42,
         air_quality=0.55,
         timestamp=datetime.datetime(2023, 1, 1),

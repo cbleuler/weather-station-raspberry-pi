@@ -6,7 +6,7 @@ from pydantic import SecretStr  # pylint: disable=import-error
 
 import requests
 
-from config import WeatherStationConfig
+from config import APIConfig
 from sensor_reading import SensorReading
 from errors import AuthenticationError
 
@@ -90,13 +90,13 @@ class ApiClient:
         return await asyncio.to_thread(self.send_sync_reading, reading)
 
     @classmethod
-    def init_from_config(cls, config: WeatherStationConfig):
+    def init_from_config(cls, api_config: APIConfig):
         api_client = cls(
-            base_url=f"{config.api.host}:{config.api.port}",
+            base_url=f"{api_config.host}:{api_config.port}",
             authentication_path="/api/token",
-            request_path="/api/v1/measurement",
-            username=config.api.user,
-            password=SecretStr(config.api.password),
+            request_path="/api/v1/measurement/",
+            username=api_config.user,
+            password=SecretStr(api_config.password),
         )
         logging.debug("APIClient initialized: %s", api_client)
         return api_client

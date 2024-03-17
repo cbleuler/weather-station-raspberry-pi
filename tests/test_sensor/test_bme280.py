@@ -36,7 +36,9 @@ def sensor(bme280_mock, i2c_mock, mock_bme280, mock_i2c, gpio_config):
 
     sea_level_pressure = 1013.25
     altitude = 1000
-    bme280_sensor = Bme280Sensor(sensor_config=gpio_config, altitude=altitude, std_sea_level_pressure=sea_level_pressure)
+    bme280_sensor = Bme280Sensor(
+        sensor_config=gpio_config, altitude=altitude, std_sea_level_pressure=sea_level_pressure
+    )
     return bme280_sensor
 
 
@@ -65,6 +67,6 @@ def test_get_measurement(sensor):
     measurement = sensor.get_measurement(weather_station_uuid)
 
     assert measurement.weather_station_uuid == weather_station_uuid
-    assert measurement.temperature == 21.5
+    assert measurement.air_temperature == 21.5
     assert measurement.humidity == 0.42
-    assert measurement.pressure == 1013.6122280906383
+    assert measurement.air_pressure == 1013.6122280906383

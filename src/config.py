@@ -20,6 +20,6 @@ class WeatherStationConfig(BaseConfig):
     name: str
     uuid: str
     altitude: float
-    normal_sea_level_pressure: float = 1013.25
+    std_sea_level_pressure: float = 1013.25
     api: APIConfig
     sensor_config: SensorConfig

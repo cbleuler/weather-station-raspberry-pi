@@ -5,8 +5,8 @@ import datetime
 
 @dataclass
 class SensorReading:
-    temperature: float
-    pressure: float
+    air_temperature: float
+    air_pressure: float
     humidity: float
     timestamp: datetime.datetime
     weather_station_uuid: str
@@ -14,8 +14,8 @@ class SensorReading:
 
     def serialize(self):
         serialized_data = {
-            "air_temperature": self.temperature,
-            "air_pressure": self.pressure,
+            "air_temperature": self.air_temperature,
+            "air_pressure": self.air_pressure,
             "humidity": self.humidity,
             "air_quality": self.air_quality,
             "time_stamp": self.timestamp.isoformat(),

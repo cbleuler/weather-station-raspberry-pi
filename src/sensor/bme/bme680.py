@@ -15,8 +15,8 @@ class Bme680Sensor(Bme280Sensor):
 
     def get_measurement(self, weather_station_uuid: str):
         sensor_reading = SensorReading(
-            temperature=self.get_temperature(),
-            pressure=self.get_normalized_pressure(),
+            air_temperature=self.get_temperature(),
+            air_pressure=self.get_normalized_pressure(),
             humidity=self.get_relative_humidity(),
             air_quality=self.get_air_quality(),
             timestamp=datetime.now(),

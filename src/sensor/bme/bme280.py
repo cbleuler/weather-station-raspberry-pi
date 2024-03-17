@@ -4,10 +4,11 @@ import math
 from busio import I2C  # pylint: disable=import-error
 from adafruit_bme280.basic import Adafruit_BME280_I2C  # pylint: disable=import-error
 from config import SensorConfig
+from sensor.sensor import Sensor
 from sensor_reading import SensorReading
 
 
-class Bme280Sensor:
+class Bme280Sensor(Sensor):
     def __init__(self, sensor_config: SensorConfig, altitude: float, std_sea_level_pressure: float):
         i2c = I2C(3, 2)
         self.sensor = self._setup_sensor(i2c_interface=i2c, i2c_address=sensor_config.i2c_address)
@@ -32,8 +33,8 @@ class Bme280Sensor:
 
     def get_measurement(self, weather_station_uuid: str):
         sensor_reading = SensorReading(
-            temperature=self.get_temperature(),
-            pressure=self.get_normalized_pressure(),
+            air_temperature=self.get_temperature(),
+            air_pressure=self.get_normalized_pressure(),
             humidity=self.get_relative_humidity(),
             timestamp=datetime.now(),
             weather_station_uuid=weather_station_uuid,

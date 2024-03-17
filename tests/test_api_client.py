@@ -6,22 +6,13 @@ import pytest
 
 from api_client import ApiClient
 from sensor_reading import SensorReading
-from config import WeatherStationConfig, APIConfig, SensorConfig
+from config import APIConfig
 from errors import AuthenticationError
 
 
 @pytest.fixture
 def api_config():
-    api_config = APIConfig(host="http://127.0.0.1", port=8000, user="someuser", password="secret")
-    sensor_config = SensorConfig(sda_pin=2, scl_pin=3, i2c_address=0x77, type="bme680")
-    config = WeatherStationConfig(
-        name="Weather Station",
-        uuid="station-1",
-        altitude=452.1,
-        normal_sea_level_pressure=1013.25,
-        api=api_config,
-        sensor_config=sensor_config,
-    )
+    config = APIConfig(host="http://127.0.0.1", port=8000, user="someuser", password="secret")
     return config
 
 
@@ -39,8 +30,8 @@ def auth_header():
 @pytest.fixture
 def sensor_reading():
     reading = SensorReading(
-        temperature=20,
-        pressure=1013.12,
+        air_temperature=20,
+        air_pressure=1013.12,
         humidity=0.42,
         timestamp=datetime.datetime(2023, 1, 1),
         weather_station_uuid="station-1",
@@ -51,14 +42,14 @@ def sensor_reading():
 def test_init(api_client):
     assert api_client.base_url == "http://127.0.0.1:8000"
     assert api_client.authentication_path == "/api/token"
-    assert api_client.request_path == "/api/v1/measurement"
+    assert api_client.request_path == "/api/v1/measurement/"
     assert api_client.username == "someuser"
     assert api_client.password.get_secret_value() == "secret"
 
     assert api_client._auth_header == {}
 
     assert api_client.authentication_url == "http://127.0.0.1:8000/api/token"
-    assert api_client.request_url == "http://127.0.0.1:8000/api/v1/measurement"
+    assert api_client.request_url == "http://127.0.0.1:8000/api/v1/measurement/"
 
 
 def test_init_from_config(api_config, api_client):
