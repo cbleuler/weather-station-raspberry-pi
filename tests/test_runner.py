@@ -10,7 +10,7 @@ from errors import InvalidSensorTypeError
 
 @pytest.fixture
 def weather_station_config_file():
-    return Path("testbed/test_config.yaml")
+    return Path("tests/testbed/test_config.yaml")
 
 
 @pytest.fixture
