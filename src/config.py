@@ -13,7 +13,7 @@ class SensorConfig(BaseConfig):
     sda_pin: int = 2
     scl_pin: int = 3
     i2c_address: int = 0x77
-    type: str = "bme280"
+    type: str = "constant"
 
 
 class WeatherStationConfig(BaseConfig):
