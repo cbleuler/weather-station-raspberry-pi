@@ -29,6 +29,11 @@ def sensor_reading_with_air_quality():
     return reading
 
 
+def test_sensor_reading_without_values():
+    with pytest.raises(ValueError):
+        SensorReading(weather_station_uuid="station-1", timestamp=datetime.datetime(2023, 1, 1))
+
+
 def test_serialize_without_air_quality(sensor_reading_without_air_quality):
     assert sensor_reading_without_air_quality.serialize() == {
         "air_temperature": 20,
