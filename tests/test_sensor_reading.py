@@ -5,31 +5,6 @@ import pytest
 from sensor_reading import SensorReading
 
 
-@pytest.fixture
-def sensor_reading_without_air_quality():
-    reading = SensorReading(
-        air_temperature=20,
-        air_pressure=1013.12,
-        humidity=0.42,
-        timestamp=datetime.datetime(2023, 1, 1),
-        weather_station_uuid="station-1",
-    )
-    return reading
-
-
-@pytest.fixture
-def sensor_reading_with_air_quality():
-    reading = SensorReading(
-        air_temperature=20,
-        air_pressure=1013.12,
-        humidity=0.42,
-        air_quality=0.55,
-        timestamp=datetime.datetime(2023, 1, 1),
-        weather_station_uuid="station-1",
-    )
-    return reading
-
-
 def test_sensor_reading_without_values():
     with pytest.raises(ValueError):
         SensorReading(weather_station_uuid="station-1", timestamp=datetime.datetime(2023, 1, 1))
