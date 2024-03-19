@@ -8,5 +8,5 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s;%(levelname)s;%(mess
 
 
 if __name__ == "__main__":
-    runner = Runner.init_from_config_file(config_file=Path("config/dev.yaml"))
+    runner = Runner.init_from_config_file(config_file=Path("config/conf.yaml"))
     asyncio.run(runner.run())
