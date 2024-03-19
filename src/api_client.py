@@ -1,14 +1,14 @@
 import asyncio
 import json
 import logging
-from dataclasses import dataclass
-from pydantic import SecretStr  # pylint: disable=import-error
 
 import requests
+from pydantic import SecretStr  # pylint: disable=import-error
+from pydantic.dataclasses import dataclass  # pylint: disable=import-error
 
 from config import APIConfig
-from sensor_reading import SensorReading
 from errors import AuthenticationError
+from sensor_reading import SensorReading
 
 
 class TokenExpiredError(Exception):
