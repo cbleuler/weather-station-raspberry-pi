@@ -1,0 +1,1411 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Weather Data API",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/token": {
+      "post": {
+        "tags": [
+          "authentication"
+        ],
+        "summary": "Login For Access Token",
+        "operationId": "login_for_access_token_api_token_post",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_login_for_access_token_api_token_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/api-token-auth": {
+      "post": {
+        "tags": [
+          "authentication"
+        ],
+        "summary": "Login For Access Token",
+        "operationId": "login_for_access_token_api_api_token_auth_post",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_login_for_access_token_api_api_token_auth_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/measurement/{weather_station_id}": {
+      "get": {
+        "tags": [
+          "measurement"
+        ],
+        "summary": "Read Measurement For Weather Station Within Timeframe",
+        "operationId": "read_measurement_for_weather_station_within_timeframe_api_v1_measurement__weather_station_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Weather Station Id",
+              "type": "string"
+            },
+            "name": "weather_station_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Start Time",
+              "type": "string",
+              "format": "date-time"
+            },
+            "name": "start_time",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "End Time",
+              "type": "string",
+              "format": "date-time"
+            },
+            "name": "end_time",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Read Measurement For Weather Station Within Timeframe Api V1 Measurement  Weather Station Id  Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MeasurementResult"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "measurement:read"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/measurement/{weather_station_id}/aggregated/": {
+      "get": {
+        "tags": [
+          "measurement"
+        ],
+        "summary": "Read Aggregated Measurement For Weather Station Within Timeframe",
+        "operationId": "read_aggregated_measurement_for_weather_station_within_timeframe_api_v1_measurement__weather_station_id__aggregated__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Weather Station Id",
+              "type": "string"
+            },
+            "name": "weather_station_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Start Time",
+              "type": "string",
+              "format": "date-time"
+            },
+            "name": "start_time",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "End Time",
+              "type": "string",
+              "format": "date-time"
+            },
+            "name": "end_time",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Aggregation Interval Seconds",
+              "type": "integer"
+            },
+            "name": "aggregation_interval_seconds",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Read Aggregated Measurement For Weather Station Within Timeframe Api V1 Measurement  Weather Station Id  Aggregated  Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MeasurementResult"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "measurement:read"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/public/measurement/{weather_station_id}/aggregated/": {
+      "get": {
+        "tags": [
+          "measurement"
+        ],
+        "summary": "Read Aggregated Measurement For Public Weather Station Within Timeframe",
+        "operationId": "read_aggregated_measurement_for_public_weather_station_within_timeframe_api_v1_public_measurement__weather_station_id__aggregated__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Weather Station Id",
+              "type": "string"
+            },
+            "name": "weather_station_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Start Time",
+              "type": "string",
+              "format": "date-time"
+            },
+            "name": "start_time",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "End Time",
+              "type": "string",
+              "format": "date-time"
+            },
+            "name": "end_time",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Aggregation Interval Seconds",
+              "type": "integer"
+            },
+            "name": "aggregation_interval_seconds",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Read Aggregated Measurement For Public Weather Station Within Timeframe Api V1 Public Measurement  Weather Station Id  Aggregated  Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MeasurementResult"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/measurement/{weather_station_id}/latest/": {
+      "get": {
+        "tags": [
+          "measurement"
+        ],
+        "summary": "Read Latest Measurement For Weather Station",
+        "operationId": "read_latest_measurement_for_weather_station_api_v1_measurement__weather_station_id__latest__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Weather Station Id",
+              "type": "string"
+            },
+            "name": "weather_station_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeasurementResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/measurement/{weather_station_id}/latest/timestamp/": {
+      "get": {
+        "tags": [
+          "measurement"
+        ],
+        "summary": "Read Latest Measurement Timestamp For Weather Station",
+        "operationId": "read_latest_measurement_timestamp_for_weather_station_api_v1_measurement__weather_station_id__latest_timestamp__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Weather Station Id",
+              "type": "string"
+            },
+            "name": "weather_station_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Read Latest Measurement Timestamp For Weather Station Api V1 Measurement  Weather Station Id  Latest Timestamp  Get",
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/measurement/": {
+      "post": {
+        "tags": [
+          "measurement"
+        ],
+        "summary": "Create Measurement",
+        "operationId": "create_measurement_api_v1_measurement__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MeasurementData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeasurementResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/weather_station/{weather_station_id}": {
+      "get": {
+        "tags": [
+          "weather_station"
+        ],
+        "summary": "Read Weather Station By Id",
+        "operationId": "read_weather_station_by_id_api_v1_weather_station__weather_station_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Weather Station Id",
+              "type": "string"
+            },
+            "name": "weather_station_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WeatherStationResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "weather_station:read"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "weather_station"
+        ],
+        "summary": "Delete Weather Station By Id",
+        "operationId": "delete_weather_station_by_id_api_v1_weather_station__weather_station_id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Weather Station Id",
+              "type": "string"
+            },
+            "name": "weather_station_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "weather_station:write"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/weather_station/": {
+      "get": {
+        "tags": [
+          "weather_station"
+        ],
+        "summary": "Read All Weather Stations",
+        "operationId": "read_all_weather_stations_api_v1_weather_station__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Read All Weather Stations Api V1 Weather Station  Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WeatherStationResult"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": [
+              "weather_station:read"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "weather_station"
+        ],
+        "summary": "Update Weather Station",
+        "operationId": "update_weather_station_api_v1_weather_station__put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WeatherStationData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WeatherStationResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "weather_station"
+        ],
+        "summary": "Create Weather Station",
+        "operationId": "create_weather_station_api_v1_weather_station__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WeatherStationData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WeatherStationResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/public/weather_station/": {
+      "get": {
+        "tags": [
+          "weather_station"
+        ],
+        "summary": "Read All Public Weather Stations",
+        "operationId": "read_all_public_weather_stations_api_v1_public_weather_station__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Read All Public Weather Stations Api V1 Public Weather Station  Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WeatherStationResult"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Read Users",
+        "operationId": "read_users_api_v1_user_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Read Users Api V1 User Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserResult"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Create User",
+        "operationId": "create_user_api_v1_user_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreateData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/user/{username}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Read User By Username",
+        "operationId": "read_user_by_username_api_v1_user__username__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Username",
+              "type": "string"
+            },
+            "name": "username",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Update User",
+        "operationId": "update_user_api_v1_user__username__put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Username",
+              "type": "string"
+            },
+            "name": "username",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreateData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Delete User",
+        "operationId": "delete_user_api_v1_user__username__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Username",
+              "type": "string"
+            },
+            "name": "username",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Body_login_for_access_token_api_api_token_auth_post": {
+        "title": "Body_login_for_access_token_api_api_token_auth_post",
+        "required": [
+          "username",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "grant_type": {
+            "title": "Grant Type",
+            "pattern": "password",
+            "type": "string"
+          },
+          "username": {
+            "title": "Username",
+            "type": "string"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "scope": {
+            "title": "Scope",
+            "type": "string",
+            "default": ""
+          },
+          "client_id": {
+            "title": "Client Id",
+            "type": "string"
+          },
+          "client_secret": {
+            "title": "Client Secret",
+            "type": "string"
+          }
+        }
+      },
+      "Body_login_for_access_token_api_token_post": {
+        "title": "Body_login_for_access_token_api_token_post",
+        "required": [
+          "username",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "grant_type": {
+            "title": "Grant Type",
+            "pattern": "password",
+            "type": "string"
+          },
+          "username": {
+            "title": "Username",
+            "type": "string"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "scope": {
+            "title": "Scope",
+            "type": "string",
+            "default": ""
+          },
+          "client_id": {
+            "title": "Client Id",
+            "type": "string"
+          },
+          "client_secret": {
+            "title": "Client Secret",
+            "type": "string"
+          }
+        }
+      },
+      "HTTPValidationError": {
+        "title": "HTTPValidationError",
+        "type": "object",
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "MeasurementData": {
+        "title": "MeasurementData",
+        "required": [
+          "time_stamp",
+          "weather_station_id"
+        ],
+        "type": "object",
+        "properties": {
+          "time_stamp": {
+            "title": "Time Stamp",
+            "type": "string",
+            "format": "date-time"
+          },
+          "air_temperature": {
+            "title": "Air Temperature",
+            "type": "number"
+          },
+          "dew_point": {
+            "title": "Dew Point",
+            "type": "number"
+          },
+          "water_temperature": {
+            "title": "Water Temperature",
+            "type": "number"
+          },
+          "humidity": {
+            "title": "Humidity",
+            "type": "number"
+          },
+          "air_pressure": {
+            "title": "Air Pressure",
+            "type": "number"
+          },
+          "precipitation_amount": {
+            "title": "Precipitation Amount",
+            "type": "number"
+          },
+          "precipitation_type": {
+            "title": "Precipitation Type",
+            "type": "string"
+          },
+          "wind_speed": {
+            "title": "Wind Speed",
+            "type": "number"
+          },
+          "gusts_of_wind_speed": {
+            "title": "Gusts Of Wind Speed",
+            "type": "number"
+          },
+          "wind_direction": {
+            "title": "Wind Direction",
+            "type": "number"
+          },
+          "solar_radiation": {
+            "title": "Solar Radiation",
+            "type": "number"
+          },
+          "air_quality": {
+            "title": "Air Quality",
+            "type": "number"
+          },
+          "soil_moisture": {
+            "title": "Soil Moisture",
+            "type": "number"
+          },
+          "weather_station_id": {
+            "title": "Weather Station Id",
+            "type": "string"
+          }
+        }
+      },
+      "MeasurementResult": {
+        "title": "MeasurementResult",
+        "required": [
+          "time_stamp",
+          "weather_station_id"
+        ],
+        "type": "object",
+        "properties": {
+          "time_stamp": {
+            "title": "Time Stamp",
+            "type": "string",
+            "format": "date-time"
+          },
+          "air_temperature": {
+            "title": "Air Temperature",
+            "type": "number"
+          },
+          "dew_point": {
+            "title": "Dew Point",
+            "type": "number"
+          },
+          "water_temperature": {
+            "title": "Water Temperature",
+            "type": "number"
+          },
+          "humidity": {
+            "title": "Humidity",
+            "type": "number"
+          },
+          "air_pressure": {
+            "title": "Air Pressure",
+            "type": "number"
+          },
+          "precipitation_amount": {
+            "title": "Precipitation Amount",
+            "type": "number"
+          },
+          "precipitation_type": {
+            "title": "Precipitation Type",
+            "type": "string"
+          },
+          "wind_speed": {
+            "title": "Wind Speed",
+            "type": "number"
+          },
+          "gusts_of_wind_speed": {
+            "title": "Gusts Of Wind Speed",
+            "type": "number"
+          },
+          "wind_direction": {
+            "title": "Wind Direction",
+            "type": "number"
+          },
+          "solar_radiation": {
+            "title": "Solar Radiation",
+            "type": "number"
+          },
+          "air_quality": {
+            "title": "Air Quality",
+            "type": "number"
+          },
+          "soil_moisture": {
+            "title": "Soil Moisture",
+            "type": "number"
+          },
+          "weather_station_id": {
+            "title": "Weather Station Id",
+            "type": "string"
+          }
+        }
+      },
+      "Token": {
+        "title": "Token",
+        "required": [
+          "access_token",
+          "token_type"
+        ],
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "title": "Access Token",
+            "type": "string"
+          },
+          "token_type": {
+            "title": "Token Type",
+            "type": "string"
+          }
+        }
+      },
+      "UserCreateData": {
+        "title": "UserCreateData",
+        "required": [
+          "username",
+          "first_name",
+          "last_name",
+          "password",
+          "is_superuser"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "title": "Username",
+            "type": "string"
+          },
+          "first_name": {
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "string"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "is_superuser": {
+            "title": "Is Superuser",
+            "type": "boolean"
+          },
+          "is_active": {
+            "title": "Is Active",
+            "type": "boolean",
+            "default": true
+          },
+          "is_technical_user": {
+            "title": "Is Technical User",
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "UserResult": {
+        "title": "UserResult",
+        "required": [
+          "username",
+          "first_name",
+          "last_name",
+          "email",
+          "is_superuser",
+          "is_active",
+          "is_technical_user",
+          "date_joined"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "title": "Username",
+            "type": "string"
+          },
+          "first_name": {
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "string"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "is_superuser": {
+            "title": "Is Superuser",
+            "type": "boolean"
+          },
+          "is_active": {
+            "title": "Is Active",
+            "type": "boolean"
+          },
+          "is_technical_user": {
+            "title": "Is Technical User",
+            "type": "boolean"
+          },
+          "last_login": {
+            "title": "Last Login",
+            "type": "string",
+            "format": "date-time"
+          },
+          "date_joined": {
+            "title": "Date Joined",
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ValidationError": {
+        "title": "ValidationError",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "loc": {
+            "title": "Location",
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            }
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        }
+      },
+      "WeatherStationData": {
+        "title": "WeatherStationData",
+        "required": [
+          "id",
+          "name",
+          "coordinates",
+          "street",
+          "street_number",
+          "city",
+          "zip_code",
+          "is_public"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "coordinates": {
+            "title": "Coordinates",
+            "type": "string"
+          },
+          "street": {
+            "title": "Street",
+            "type": "string"
+          },
+          "street_number": {
+            "title": "Street Number",
+            "type": "string"
+          },
+          "city": {
+            "title": "City",
+            "type": "string"
+          },
+          "zip_code": {
+            "title": "Zip Code",
+            "type": "integer"
+          },
+          "is_public": {
+            "title": "Is Public",
+            "type": "boolean"
+          }
+        }
+      },
+      "WeatherStationResult": {
+        "title": "WeatherStationResult",
+        "required": [
+          "id",
+          "name",
+          "coordinates",
+          "street",
+          "street_number",
+          "city",
+          "zip_code",
+          "is_public"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "coordinates": {
+            "title": "Coordinates",
+            "type": "string"
+          },
+          "street": {
+            "title": "Street",
+            "type": "string"
+          },
+          "street_number": {
+            "title": "Street Number",
+            "type": "string"
+          },
+          "city": {
+            "title": "City",
+            "type": "string"
+          },
+          "zip_code": {
+            "title": "Zip Code",
+            "type": "integer"
+          },
+          "is_public": {
+            "title": "Is Public",
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "OAuth2PasswordBearer": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "scopes": {
+              "weather_station:read": "Read access to weather stations",
+              "weather_station:write": "Write access to weather stations",
+              "measurement:read": "Read access to measurements",
+              "measurement:write": "Write access to measurements",
+              "user:read": "Read access to users",
+              "user:write": "Write access to users",
+              "self:read": "Read access to own user",
+              "self:write": "Write access to own user",
+              "admin": "Read and write access to all resources"
+            },
+            "tokenUrl": "api/token"
+          }
+        }
+      }
+    }
+  }
+}
