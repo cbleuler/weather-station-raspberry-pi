@@ -1,5 +1,5 @@
 import pytest
-from sensor import Sensor
+from sensor.sensor import Sensor
 
 
 def test_init():

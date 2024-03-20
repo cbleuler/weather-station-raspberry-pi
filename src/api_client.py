@@ -1,12 +1,13 @@
 import asyncio
 import json
 import logging
-from dataclasses import dataclass
-from pydantic import SecretStr  # pylint: disable=import-error
 
 import requests
+from pydantic import SecretStr  # pylint: disable=import-error
+from pydantic.dataclasses import dataclass  # pylint: disable=import-error
 
-from config import WeatherStationConfig
+from config import APIConfig
+from errors import AuthenticationError
 from sensor_reading import SensorReading
 
 
@@ -51,6 +52,14 @@ class ApiClient:
             },
             timeout=10,
         )
+
+        if res.status_code == 422:
+            raise AuthenticationError("Non-empty password must be provided.")
+        if res.status_code == 401:
+            raise AuthenticationError("Username or password is incorrect.")
+        if res.status_code != 200:
+            raise AuthenticationError("Something went wrong during authentication.")
+
         data = json.loads(res.text)
         try:
             token = data["token"]
@@ -81,13 +90,13 @@ class ApiClient:
         return await asyncio.to_thread(self.send_sync_reading, reading)
 
     @classmethod
-    def init_from_config(cls, config: WeatherStationConfig):
+    def init_from_config(cls, api_config: APIConfig):
         api_client = cls(
-            base_url=f"{config.api.host}:{config.api.port}",
+            base_url=f"{api_config.host}:{api_config.port}",
             authentication_path="/api/token",
-            request_path="/api/v1/measurement",
-            username=config.api.user,
-            password=SecretStr(config.api.password),
+            request_path="/api/v1/measurement/",
+            username=api_config.user,
+            password=SecretStr(api_config.password),
         )
         logging.debug("APIClient initialized: %s", api_client)
         return api_client
