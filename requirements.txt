@@ -3,7 +3,7 @@ pydantic==2.4.2
 confme==2.0.2
 adafruit_blinka
 adafruit-circuitpython-bme280==2.6.6
-adafruit-circuitpython-bme680==3.7.4
+adafruit-circuitpython-bme680==3.7.13
 RPi.GPIO>=0.7.0
 
 # Test Requirements
