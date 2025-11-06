@@ -1,5 +1,5 @@
 requests>=2.25.1
-pydantic==2.12.3
+pydantic==2.12.4
 confme==2.0.4
 adafruit_blinka
 adafruit-circuitpython-bme280==2.6.30
