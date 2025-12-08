@@ -7,6 +7,6 @@ adafruit-circuitpython-bme680==3.7.14
 RPi.GPIO>=0.7.0
 
 # Test Requirements
-pytest==9.0.1
+pytest==9.0.2
 pytest-cov==7.0.0
 pytest-dotenv==0.5.2
