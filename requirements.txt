@@ -2,7 +2,7 @@ requests>=2.33.1
 pydantic==2.13.3
 confme==2.2.0
 adafruit_blinka
-adafruit-circuitpython-bme280==2.6.31
+adafruit-circuitpython-bme280==2.6.32
 adafruit-circuitpython-bme680==3.7.15
 RPi.GPIO>=0.7.1
 
