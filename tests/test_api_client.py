@@ -78,7 +78,7 @@ def test_init_from_config(api_config, api_client):
         ),
     ],
 )
-@unittest.mock.patch("requests.post")
+@unittest.mock.patch("requests.Session.post")
 def test_create_auth_header_valid_password(mock_auth_response, auth_response, token, api_client):
     mock_res = lambda: None
     mock_res.text = auth_response
@@ -90,7 +90,7 @@ def test_create_auth_header_valid_password(mock_auth_response, auth_response, to
     assert actual_auth_header == {"Authorization": f"Bearer {token}"}
 
 
-@unittest.mock.patch("requests.post")
+@unittest.mock.patch("requests.Session.post")
 def test_create_auth_header_empty_password(mock_auth_response, api_client):
     mock_res = lambda: None
     mock_res.status_code = 422
@@ -102,7 +102,7 @@ def test_create_auth_header_empty_password(mock_auth_response, api_client):
     assert str(e.value) == "Non-empty password must be provided."
 
 
-@unittest.mock.patch("requests.post")
+@unittest.mock.patch("requests.Session.post")
 def test_create_auth_header_wrong_password(mock_auth_response, api_client):
     mock_res = lambda: None
     mock_res.status_code = 401
@@ -114,7 +114,7 @@ def test_create_auth_header_wrong_password(mock_auth_response, api_client):
     assert str(e.value) == "Username or password is incorrect."
 
 
-@unittest.mock.patch("requests.post")
+@unittest.mock.patch("requests.Session.post")
 def test_create_auth_header_other_error(mock_auth_response, api_client):
     mock_res = lambda: None
     mock_res.status_code = 404
@@ -142,7 +142,7 @@ def test_get_auth_header(api_client, auth_header):
         (401, False),  # Invalid token
     ],
 )
-@unittest.mock.patch("requests.post")
+@unittest.mock.patch("requests.Session.post")
 def test_send_sync_reading(mock_auth_response, status_code, return_value, api_client, auth_header, sensor_reading):
     mock_res = lambda: None
     mock_res.status_code = status_code
