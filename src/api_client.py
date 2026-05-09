@@ -25,6 +25,7 @@ class ApiClient:
 
     def __post_init__(self):
         self._auth_header = {}
+        self._session = requests.Session()
 
     @property
     def request_url(self):
@@ -43,7 +44,7 @@ class ApiClient:
         return self._auth_header
 
     def _create_auth_header(self):
-        res = requests.post(
+        res = self._session.post(
             self.authentication_url,
             data={
                 "username": self.username,
@@ -68,11 +69,11 @@ class ApiClient:
         return {"Authorization": f"Bearer {token}"}
 
     def send_sync_reading(self, reading: SensorReading) -> bool:
-        res = requests.post(self.request_url, headers=self.get_auth_header(), json=reading.serialize(), timeout=10)
+        res = self._session.post(self.request_url, headers=self.get_auth_header(), json=reading.serialize(), timeout=10)
         if res.status_code == 200:
             return True
         if res.status_code == 401:
-            res = requests.post(
+            res = self._session.post(
                 self.request_url, headers=self.get_auth_header(refresh=True), json=reading.serialize(), timeout=10
             )
         else:
