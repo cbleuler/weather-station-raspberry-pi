@@ -1,4 +1,4 @@
-requests>=2.34.1
+requests>=2.34.2
 pydantic==2.13.4
 confme==2.2.0
 adafruit_blinka
